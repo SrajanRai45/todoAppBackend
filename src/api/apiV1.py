@@ -4,7 +4,7 @@ from typing import Annotated
 
 from fastapi import APIRouter, Body, Depends, HTTPException, Request, Path, status
 from sqlalchemy.orm import Session
-from starlette.status import HTTP_200_OK
+from starlette.status import HTTP_200_OK, HTTP_422_UNPROCESSABLE_CONTENT
 
 from database.database import get_db
 from models.models import TodoRequest, Todos
@@ -50,4 +50,16 @@ async def updateTodo(
     todo_model.priority = todo_request.priority
 
     db.add(todo_model)
+    db.commit()
+
+
+@routerV1.delete("/todo/{todo_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def deleteTodo(
+    db: Annotated[Session, Depends(get_db)], todo_id: int = Path(get=0)
+):
+    todo_model = db.query(Todos).filter(Todos.id == todo_id).first()
+    if todo_model is None:
+        raise HTTPException(status_code=422, detail="Todo not found")
+    db.query(Todos).filter(Todos.id == todo_id).delete()
+
     db.commit()
