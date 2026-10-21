@@ -5,6 +5,7 @@ from fastapi import FastAPI
 from api.apiV1 import routerV1
 from database.database import engine
 import models.models
+from auth.auth import routerAuth
 
 
 @asynccontextmanager
@@ -20,3 +21,4 @@ async def lifespan(app: FastAPI):
 app = FastAPI(lifespan=lifespan)
 
 app.include_router(routerV1)
+app.include_router(routerAuth)

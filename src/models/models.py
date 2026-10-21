@@ -1,5 +1,8 @@
+from inspect import trace
+
 from pydantic import BaseModel, Field
-from sqlalchemy import Boolean, Column, Integer, String
+from pydantic.types import T
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, true
 
 from src.database.database import Base
 
@@ -12,6 +15,19 @@ class Todos(Base):
     description = Column(String)
     priority = Column(Integer)
     complete = Column(Boolean, default=False)
+    owner_id = Column(Integer, ForeignKey("user.id"))
+
+
+class User(Base):
+    __tablename__ = "user"
+
+    id = Column(Integer, primary_key=True, index=True)
+    email = Column(String, unique=True)
+    username = Column(String, unique=True)
+    first_name = Column(String)
+    last_name = Column(String)
+    hashed_password = Column(String)
+    is_active = Column(Boolean, default=True)
 
 
 # create pydantic model for data validation incoming database store reqs
