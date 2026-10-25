@@ -4,9 +4,9 @@ from fastapi import APIRouter, Body, Depends, HTTPException, Path, Request, stat
 from sqlalchemy.orm import Session
 from starlette.status import HTTP_200_OK, HTTP_422_UNPROCESSABLE_CONTENT
 
-from database.database import get_db
-from models.models import Todos
-from models.validation import TodoRequest
+from src.database.database import get_db
+from src.models.models import Todos
+from src.models.validation import TodoRequest
 
 routerV1 = APIRouter()
 
