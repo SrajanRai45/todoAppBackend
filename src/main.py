@@ -2,10 +2,10 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 
-from api.apiV1 import routerV1
-from database.database import engine
 import models.models
+from api.apiV1 import routerV1
 from auth.auth import routerAuth
+from database.database import engine
 
 
 @asynccontextmanager

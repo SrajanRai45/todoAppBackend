@@ -1,13 +1,12 @@
-from operator import add
-from os import stat
 from typing import Annotated
 
-from fastapi import APIRouter, Body, Depends, HTTPException, Request, Path, status
+from fastapi import APIRouter, Body, Depends, HTTPException, Path, Request, status
 from sqlalchemy.orm import Session
 from starlette.status import HTTP_200_OK, HTTP_422_UNPROCESSABLE_CONTENT
 
 from database.database import get_db
-from models.models import TodoRequest, Todos
+from models.models import Todos
+from models.validation import TodoRequest
 
 routerV1 = APIRouter()
 

@@ -1,8 +1,4 @@
-from inspect import trace
-
-from pydantic import BaseModel, Field
-from pydantic.types import T
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, true
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
 
 from src.database.database import Base
 
@@ -28,11 +24,4 @@ class User(Base):
     last_name = Column(String)
     hashed_password = Column(String)
     is_active = Column(Boolean, default=True)
-
-
-# create pydantic model for data validation incoming database store reqs
-class TodoRequest(BaseModel):
-    title: str = Field(min_length=3)
-    description: str = Field(min_length=3, max_length=100)
-    priority: int = Field(gt=0, lt=6)
-    complete: bool
+    role = Column(String)
