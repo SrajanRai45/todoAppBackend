@@ -15,6 +15,7 @@ dependencies = [
   "aiosqlite>=0.20.0",
   "pwdlib[argon2]",
   "python-multipart>=0.0.32",
+  "python-jose[cryptography]>=3.5.0",
 ]
 
 [tool.uv]
