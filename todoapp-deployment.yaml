@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todoapp-deployment
+  namespace: default
+  labels:
+    app: todoapp
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: todoapp
+  template:
+    metadata:
+      annotations:
+        kubectl.kubernetes.io/default-container: todoapp-container
+      labels:
+        app: todoapp
+    spec:
+      containers:
+        - name: todoapp-container
+          image: srajanrai45/todoapp:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8000
+              name: http
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          livenessProbe:
+            tcpSocket:
+              port: 8000
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            failureThreshold: 2
+          volumeMounts:
+            - name: sqlite-storage
+              mountPath: /app/src/database
+      volumes:
+        - name: sqlite-storage
+          persistentVolumeClaim:
+            claimName: sqlite-pvc
